@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -37,7 +36,7 @@ namespace Backlogcsv2xlsx
         /// <param name="multiKeyHandling">キーがカンマ区切りで複数存在した場合の扱い</param>
         public void Assignment(BacklogEntity backlogEntity, Func<BacklogEntity, string> getDictKeyElement, Func<List<string>, List<string>> multiKeyHandling)
         {
-            bool flg = false;                                           //  true => backlogEntityをxlsxLinesに追加
+            bool isAdd = false;                                           //  true => backlogEntityをxlsxLinesに追加
             List<int> dictKey = new List<int>();
             if (rakurakuRegex.IsMatch(backlogEntity.RakurakuExpenseNo)) //  楽楽精算Noあり
             {
@@ -53,11 +52,11 @@ namespace Backlogcsv2xlsx
                 {
                     if (backlogEntity.StartDate.Length == 0)    // 未着手
                     {
-                        backlogEntity.SetTableStatus(TableStatus.Waiting); flg = true;
+                        backlogEntity.SetTableStatus(TableStatus.Waiting); isAdd = true;
                     }
                     else                                        // 開発中
                     {
-                        backlogEntity.SetTableStatus(TableStatus.InDevelopment); flg = true;
+                        backlogEntity.SetTableStatus(TableStatus.InDevelopment); isAdd = true;
                     }
                 }
                 else if (dateRegex.IsMatch(backlogEntity.UpdateDate))
@@ -67,11 +66,11 @@ namespace Backlogcsv2xlsx
                     {
                         backlogEntity.SetTableStatus(TableStatus.Finish);
                         backlogEntity.RakurakuExpenseNo = rakurakuRegex.Match(backlogEntity.RakurakuExpenseNo).Groups["RakurakuNo"].Value;  //  楽楽精算No登録
-                        flg = true;
+                        isAdd = true;
                     }
                 }
             }
-            if (flg)
+            if (isAdd)
             {
                 foreach (int intDictKey in dictKey)
                 {
@@ -83,7 +82,7 @@ namespace Backlogcsv2xlsx
         }
 
         /// <summary>
-        //  格納されたデータをstring型の2次元配列として返す
+        //  格納されたデータをobject型の2次元配列として返す
         /// </summary>
         /// <param name="A1Text">辞書キーが示す項目のタイトル</param>
         /// <param name="isShowRakuraku">楽楽精算の列の有無</param>

@@ -14,18 +14,18 @@ using System.Linq;
 
 namespace Backlogcsv2xlsx
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private DateTime startDate;
         private DateTime endDate;
         private string sortKeyDigital;
         private string sortKeyDepartment;
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             this.Text = "ファイル選択後に実行ボタンで実行";
             startDate = GetNearestDayOfWeek(DateTime.Now.AddDays(-7), LoadDayOfWeek2Int()); endDate = startDate.AddDays(LoadCrossMeetingSpan());    //  初期状態で選択されている日付の設定
@@ -124,7 +124,7 @@ namespace Backlogcsv2xlsx
         {
             if (!File.Exists(_TextBox_FileName.Text)) { MessageBox.Show("ファイルが見つかりません。"); return; }
             this.Text = "処理中...";
-            button1.Visible = false;
+            ExecButton.Visible = false;
             try
             {
                 using (var stream = new StreamReader(_TextBox_FileName.Text, Encoding.GetEncoding("Shift_JIS")))
@@ -164,21 +164,21 @@ namespace Backlogcsv2xlsx
                 MessageBox.Show($"Error:{e.ToString()}");
                 throw (e);
             }
-            button1.Visible = false;
+            ExecButton.Visible = false;
             this.Text = "完了";
             return;
         }
 
-        private void list2Xlsx(List<List<object>> list1, List<List<object>> list2, string fileName)
+        private void list2Xlsx(List<List<object>> page1, List<List<object>> page2, string fileName)
         {
             var outFileName = $"{fileName}.xlsx";
             using (XLWorkbook workbook = new XLWorkbook())
             {
                 IXLWorksheet worksheet = workbook.AddWorksheet("各部一覧");
-                worksheet.Cell("A1").InsertData(list1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center; //  データ設定、中央寄せ
+                worksheet.Cell("A1").InsertData(page1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center; //  データ設定、中央寄せ
                 int lastRow = worksheet.LastRowUsed().RowNumber();                                                      //  =SUM()
                 worksheet.Cell(lastRow + 1, 1).Value = "合計";
-                for (int i = 1; i < list1[0].Count; i++)
+                for (int i = 1; i < page1[0].Count; i++)
                 {
                     if (3 < i) worksheet.Cell(lastRow + 1, i + 1).Value = " ";
                     else worksheet.Cell(lastRow + 1, i + 1).FormulaA1 = $"=SUM({(char)('A' + i)}{2}:{(char)('A' + i)}{lastRow})";
@@ -193,10 +193,10 @@ namespace Backlogcsv2xlsx
                 worksheet.LastRowUsed().CellsUsed().Style.Border.TopBorder = XLBorderStyleValues.Double;                //  合計欄は二重線
 
                 worksheet = workbook.AddWorksheet("デジ推一覧");
-                worksheet.Cell("A1").InsertData(list2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                worksheet.Cell("A1").InsertData(page2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                 lastRow = worksheet.LastRowUsed().RowNumber();
                 worksheet.Cell(lastRow + 1, 1).Value = "合計";
-                for (int i = 1; i < list2[0].Count; i++)
+                for (int i = 1; i < page2[0].Count; i++)
                 {
                     if (3 < i) worksheet.Cell(lastRow + 1, i + 1).Value = "";
                     else worksheet.Cell(lastRow + 1, i + 1).FormulaA1 = $"=SUM({(char)('A' + i)}{2}:{(char)('A' + i)}{lastRow})";
@@ -381,13 +381,13 @@ namespace Backlogcsv2xlsx
             {
                 return true;
             }
-            else if (Regex.IsMatch(dateString, @"^\d{1,2}$") && 1 <= int.Parse(dateString) && int.Parse(dateString) < DateTime.DaysInMonth(defaultDate.Year, defaultDate.Month))
+            if (Regex.IsMatch(dateString, @"^\d{1,2}$") && 1 <= int.Parse(dateString) && int.Parse(dateString) < DateTime.DaysInMonth(defaultDate.Year, defaultDate.Month))
             {
                 //  日付のみ入力
                 date = new DateTime(defaultDate.Year, defaultDate.Month, int.Parse(dateString));
                 return true;
             }
-            else if (Regex.IsMatch(dateString, @"(^(?<month>\d{1,2})(?<day>\d{2})$)|(^(?<month>\d+)/(?<day>\d+)$)"))
+            if (Regex.IsMatch(dateString, @"(^(?<month>\d{1,2})(?<day>\d{2})$)|(^(?<month>\d+)/(?<day>\d+)$)"))
             {
                 //  月日のみ入力
                 var groups = Regex.Match(dateString, @"(^(?<month>\d{1,2})(?<day>\d{2})$)|(^(?<month>\d+)/(?<day>\d+)$)").Groups;
@@ -399,7 +399,7 @@ namespace Backlogcsv2xlsx
                     return true;
                 }
             }
-            else if (Regex.IsMatch(dateString, @"(^(?<year>\d{1,4})(?<month>\d{2})(?<day>\d{2})$)|(^(?<year>\d+)/(?<month>\d+)/(?<day>\d+)$)"))
+            if (Regex.IsMatch(dateString, @"(^(?<year>\d{1,4})(?<month>\d{2})(?<day>\d{2})$)|(^(?<year>\d+)/(?<month>\d+)/(?<day>\d+)$)"))
             {
                 //  年月日入力
                 var groups = Regex.Match(dateString, @"^((?<year>\d{1,4})(?<month>\d{2})(?<day>\d{2}))|((?<year>\d+)/(?<month>\d+)/(?<day>\d+))$").Groups;

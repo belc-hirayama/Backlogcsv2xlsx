@@ -1,6 +1,6 @@
 ﻿namespace Backlogcsv2xlsx
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// 必要なデザイナー変数です。
@@ -35,7 +35,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ExecButton = new System.Windows.Forms.Button();
             this._textBoxStartDate = new System.Windows.Forms.TextBox();
             this._textBoxEndDate = new System.Windows.Forms.TextBox();
             this._textBoxDiff = new System.Windows.Forms.TextBox();
@@ -108,16 +108,16 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "集計終了日";
             // 
-            // button1
+            // ExecButton
             // 
-            this.button1.Font = new System.Drawing.Font("MS UI Gothic", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button1.Location = new System.Drawing.Point(625, 325);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(140, 82);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "実行";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.ExecButton.Font = new System.Drawing.Font("MS UI Gothic", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.ExecButton.Location = new System.Drawing.Point(625, 325);
+            this.ExecButton.Name = "ExecButton";
+            this.ExecButton.Size = new System.Drawing.Size(140, 82);
+            this.ExecButton.TabIndex = 8;
+            this.ExecButton.Text = "実行";
+            this.ExecButton.UseVisualStyleBackColor = true;
+            this.ExecButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // _textBoxStartDate
             // 
@@ -173,7 +173,7 @@
             this._radioButtonDay.UseVisualStyleBackColor = true;
             this._radioButtonDay.CheckedChanged += new System.EventHandler(this._radioButtonDay_CheckedChanged);
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -183,7 +183,7 @@
             this.Controls.Add(this._textBoxDiff);
             this.Controls.Add(this._textBoxEndDate);
             this.Controls.Add(this._textBoxStartDate);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ExecButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -191,9 +191,9 @@
             this.Controls.Add(this.startCalendar);
             this.Controls.Add(this._TextBox_FileName);
             this.Controls.Add(this._Button_OpenFile);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,7 +208,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ExecButton;
         private System.Windows.Forms.TextBox _textBoxStartDate;
         private System.Windows.Forms.TextBox _textBoxEndDate;
         private System.Windows.Forms.TextBox _textBoxDiff;
