@@ -7,12 +7,12 @@ namespace Backlogcsv2xlsx
 {
     internal class XlsxPage
     {
-        public SortedDictionary<int, List<BacklogEntity>> xlsxLines;            //  キーはsortKeyに対応する数値
-        Regex rakurakuRegex = new Regex(@"^[a-zA-Z]+-(?<RakurakuNo>\d+)$");     //  楽楽精算はアルファベット群-数字群
-        Regex dateRegex = new Regex(@"^\d{4}/\d{2}/\d{2}\s*\d{2}:\d{2}$");      //  年月日
-        DateTime beginingPeriod;
-        DateTime endingPeriod;
-        Dictionary<string, int> sortKey;
+        public SortedDictionary<int, List<BacklogEntity>> xlsxLines { get; }           //  キーはsortKeyに対応する数値
+        private readonly Regex rakurakuRegex = new Regex(@"^[a-zA-Z]+-(?<RakurakuNo>\d+)$");     //  楽楽精算はアルファベット群-数字群
+        private readonly Regex dateRegex = new Regex(@"^\d{4}/\d{2}/\d{2}\s*\d{2}:\d{2}$");      //  年月日
+        private readonly DateTime beginingPeriod;
+        private readonly DateTime endingPeriod;
+        private Dictionary<string, int> sortKey;
 
         public XlsxPage(DateTime begin, DateTime end, Dictionary<string, int> sortKeyDict) {
             xlsxLines = new SortedDictionary<int, List<BacklogEntity>>();
@@ -90,8 +90,13 @@ namespace Backlogcsv2xlsx
         public List<List<object>> GetxlsxLiness(string A1Text, bool isShowRakuraku)
         {
             List<List<object>> xlsxLinesList = new List<List<object>>();
-            var headerText = new List<object>();
-            headerText.Add(A1Text); headerText.Add("未着手"); headerText.Add("開発中"); headerText.Add("完了");
+            var headerText = new List<object>
+            {
+                A1Text,
+                "未着手",
+                "開発中",
+                "完了"
+            };
             if (isShowRakuraku) { headerText.Add("楽々精算No（完了分）"); }
             xlsxLinesList.Add(headerText);
             foreach (var line in xlsxLines)

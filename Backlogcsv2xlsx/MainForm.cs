@@ -220,6 +220,7 @@ namespace Backlogcsv2xlsx
                     UseShellExecute = true,
                     CreateNoWindow = true,
                 };
+                Debug.WriteLine(startInfo);
                 Process.Start(startInfo);
             } else
             {
